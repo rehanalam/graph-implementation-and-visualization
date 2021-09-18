@@ -1,0 +1,41 @@
+.app-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.visualization-wrapper,
+.graph-wrapper {
+  width: 100%;
+  display: flex;
+}
+
+.nodes-actions-wrapper,
+.edges-actions-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nodes-actions-wrapper button,
+.edges-actions-wrapper button {
+  margin-left: 20px;
+}
+
+.nodes-wrapper,
+.edges-wrapper {
+  padding: 20px;
+  flex: 1 1 0px
+  
+}
+
+.nodes-visualization,
+.page-rank-visualization {
+  flex: 1;
+  margin: 0 20px;
+}
+
+.error-message-text {
+  color:red;
+  margin-top: 20px;
+}
