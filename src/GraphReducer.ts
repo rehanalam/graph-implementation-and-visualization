@@ -13,9 +13,9 @@ export const ON_EDGE_ADD = "ON_EDGE_ADD";
 export const ON_EDGE_REMOVE = "ON_EDGE_REMOVE";
 
 /***
- * This component renders network chart to visualize nodes
- * and shows page page ranking.
- * @param {GraphDef} graphState
+ * A reducer to manipulate graph state.
+ * @param {GraphDef} state
+ * @param {ActionDef} action
  ***/
 
 export const graphReducer = (state: GraphDef, action: ActionDef) => {
