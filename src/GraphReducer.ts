@@ -23,7 +23,6 @@ export const graphReducer = (state: GraphDef, action: ActionDef) => {
     // Adds node in graph
     case ON_NODE_ADD: {
       return { ...state, [action.payload.node]: [] };
-      break;
     }
 
     // Removes node from graph
@@ -39,7 +38,6 @@ export const graphReducer = (state: GraphDef, action: ActionDef) => {
         }
       });
       return newState;
-      break;
     }
 
     // Adds edge from graph
@@ -51,7 +49,6 @@ export const graphReducer = (state: GraphDef, action: ActionDef) => {
           action.payload.destination,
         ],
       };
-      break;
     }
 
     // Removes edge from graph
@@ -61,7 +58,6 @@ export const graphReducer = (state: GraphDef, action: ActionDef) => {
         action.payload.source,
         action.payload.indexToRemove
       );
-      break;
     }
 
     default:

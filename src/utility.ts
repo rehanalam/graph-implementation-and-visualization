@@ -64,7 +64,6 @@ export let getPageRanking = function (graph: GraphDef): pageRankDef {
     }
     pageRanking[key] = sum;
   });
-  console.log(pageRanking);
   return pageRanking;
 };
 
@@ -94,7 +93,6 @@ export let getChartData = (graph: GraphDef) => {
       });
     });
   });
-  console.log({ nodes, links });
   return { nodes, links };
 };
 
