@@ -12,7 +12,12 @@ export const isNodeExist = (graphStat: GraphDef, node: string) => {
 };
 
 const App: FunctionComponent = () => {
-  const [graphState, dispatch] = useReducer(graphReducer, graphInitialValue);
+  const [graphState, dispatch] = useReducer(graphReducer, {
+    A: [],
+    B: ["A", "C"],
+    C: ["A"],
+    D: []
+  });
 
   const onNodeAdd = (node: string): void => {
     dispatch({

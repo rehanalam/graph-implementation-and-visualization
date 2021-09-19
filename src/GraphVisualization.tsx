@@ -10,21 +10,24 @@ interface GraphVisualizationCompProps {
 
 const GraphVisualization: FunctionComponent<GraphVisualizationCompProps> = (props) => {
     const { graphState } = props;
-    const [chartData, setChartData] = useState<ChartDataInterface>();
-    const [pageRank, setPageRank] = useState<pageRankDef>();
+    const [chartDataState, setChartDataState] = useState<ChartDataInterface>();
+    const [pageRankState, setPageRankState] = useState<pageRankDef>();
 
     useEffect(() => {
-        setChartData(getChartData(graphState));
-        setPageRank(getPageRanking(graphState))
+        setChartDataState(getChartData(graphState));
+        setPageRankState(getPageRanking(graphState))
     }, [graphState])
 
     return <div className="visualization-wrapper">
-        <Card className="nodes-visualization" title="Nodes Visualization">
+        <Card
+            data-testid="nodes-visualization"
+            className="nodes-visualization"
+            title="Nodes Visualization">
             <div style={{ height: '300px' }}>
                 {
-                    chartData && <ResponsiveNetwork
-                        nodes={chartData.nodes}
-                        links={chartData.links}
+                    chartDataState && <ResponsiveNetwork
+                        nodes={chartDataState.nodes}
+                        links={chartDataState.links}
                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                         repulsivity={6}
                         iterations={60}
@@ -38,10 +41,13 @@ const GraphVisualization: FunctionComponent<GraphVisualizationCompProps> = (prop
                 }
             </div>
         </Card>
-        <Card className="page-rank-visualization" title="Page Rank Visualization" >
+        <Card
+            data-testid="page-rank-visualization"
+            className="page-rank-visualization"
+            title="Page Ranking" >
             {
-                pageRank && Object.keys(pageRank).map(r => {
-                    return <p key={r}><strong>{r}:</strong> {pageRank[r]}</p>
+                pageRankState && Object.keys(pageRankState).map(r => {
+                    return <p key={r}><strong>{r}:</strong> {pageRankState[r]}</p>
                 })
             }
         </Card>

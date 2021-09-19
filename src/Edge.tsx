@@ -1,5 +1,5 @@
 import { Button, Card, Form, Input } from 'antd';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { isNodeExist } from './App';
 import './App.css';
 import { GraphDef } from './Graph';
@@ -19,7 +19,7 @@ const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
     useEffect(() => {
         setErrorState('');
     }, [graphState]);
-    
+
     const addEdge = (source: string, destination: string): void => {
         if (isNodeExist(graphState, source) && isNodeExist(graphState, destination)) {
             onEdgeAdd(source, destination);
@@ -44,6 +44,7 @@ const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
                     label="Source"
                     name="source">
                     <Input
+                        data-testid="edge-source"
                         value={source}
                         onChange={(e) => setSource(e.target.value)}
                         type="text"
@@ -53,6 +54,7 @@ const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
                     label="Destination"
                     name="destination">
                     <Input
+                        data-testid="edge-destination"
                         value={destination}
                         onChange={(e) => setDestination(e.target.value)}
                         type="text"
