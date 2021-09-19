@@ -99,21 +99,3 @@ describe('GraphVisualization', () => {
     screen.getByTestId('nodes-visualization');
   });
 });
-
-
-// describe('Edge', () => {
-//   test('renders Edge component have both source and destination fields', () => {
-//     const graphState = {
-//       A: [],
-//       B: ["A", "C"],
-//       C: ["A"],
-//       D: []
-//     };
-    
-
-//     render(<EdgeComponent graphState={graphState} />);
-
-//     screen.getByTestId('edge-source');
-//     screen.getByTestId('edge-destination');
-//   });
-// });
