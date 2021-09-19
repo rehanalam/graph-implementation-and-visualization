@@ -1,5 +1,5 @@
 
-import { useReducer } from 'react';
+import { FunctionComponent, useReducer } from 'react';
 import './App.css';
 import EdgeComponent from './Edge';
 import { GraphDef, graphInitialValue } from './Graph';
@@ -11,7 +11,7 @@ export const isNodeExist = (graphStat: GraphDef, node: string) => {
   return !!graphStat.hasOwnProperty(node);
 };
 
-function App() {
+const App: FunctionComponent = () => {
   const [graphState, dispatch] = useReducer(graphReducer, graphInitialValue);
 
   const onNodeAdd = (node: string): void => {

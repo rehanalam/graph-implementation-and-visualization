@@ -1,5 +1,5 @@
 import { Button, Card, Form, Input } from 'antd';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { isNodeExist } from './App';
 import './App.css';
 import { GraphDef } from './Graph';
@@ -14,8 +14,12 @@ const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
     const { graphState, onEdgeAdd, onEdgeRemove } = props;
     const [source, setSource] = useState('');
     const [destination, setDestination] = useState('');
-    const [errorState, setErrorState] = useState('')
+    const [errorState, setErrorState] = useState('');
 
+    useEffect(() => {
+        setErrorState('');
+    }, [graphState]);
+    
     const addEdge = (source: string, destination: string): void => {
         if (isNodeExist(graphState, source) && isNodeExist(graphState, destination)) {
             onEdgeAdd(source, destination);
@@ -35,12 +39,10 @@ const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
     return <div className="edges-wrapper">
         <Card title="EDGES" >
             <Form
-                name="basic"
-            >
+                name="basic">
                 <Form.Item
                     label="Source"
-                    name="source"
-                >
+                    name="source">
                     <Input
                         value={source}
                         onChange={(e) => setSource(e.target.value)}
@@ -49,8 +51,7 @@ const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
                 </Form.Item>
                 <Form.Item
                     label="Destination"
-                    name="destination"
-                >
+                    name="destination">
                     <Input
                         value={destination}
                         onChange={(e) => setDestination(e.target.value)}

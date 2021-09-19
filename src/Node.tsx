@@ -17,7 +17,7 @@ const NodeComponent: FunctionComponent<NodeComponentProps> = (props) => {
 
     useEffect(() => {
         setErrorState('');
-    }, [graphState])
+    }, [graphState]);
 
     const addNode = (node: string): void => {
         if (isNodeExist(graphState, node)) {

@@ -41,7 +41,7 @@ const GraphVisualization: FunctionComponent<GraphVisualizationCompProps> = (prop
         <Card className="page-rank-visualization" title="Page Rank Visualization" >
             {
                 pageRank && Object.keys(pageRank).map(r => {
-                    return <p><strong>{r}:</strong> {pageRank[r]}</p>
+                    return <p key={r}><strong>{r}:</strong> {pageRank[r]}</p>
                 })
             }
         </Card>

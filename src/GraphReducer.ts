@@ -51,7 +51,6 @@ export const graphReducer = (state: GraphDef, action: ActionDef) => {
 
     // Removes edge from graph
     case ON_EDGE_REMOVE: {
-      removeEdge(action.payload.source, action.payload.destination);
       return removeEdge(action.payload.source, action.payload.destination);
       break;
     }
