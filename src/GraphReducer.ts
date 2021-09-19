@@ -1,9 +1,9 @@
-import { GraphDef } from "./Graph";
+import { GraphDef, removeEdge } from "./utility";
 
 interface ActionDef {
   type: string;
   payload: {
-    [key: string]: string;
+    [key: string]: any;
   };
 }
 
@@ -12,46 +12,55 @@ export const ON_NODE_REMOVE = "ON_NODE_REMOVE";
 export const ON_EDGE_ADD = "ON_EDGE_ADD";
 export const ON_EDGE_REMOVE = "ON_EDGE_REMOVE";
 
-export const graphReducer = (state: GraphDef, action: ActionDef) => {
-  let removeEdge = (source: string, destination: string) => {
-    const index = state[source].indexOf(destination);
-    if (index !== -1) {
-      state[source].splice(index, 1);
-    }
-    return { ...state };
-  };
+/***
+ * This component renders network chart to visualize nodes
+ * and shows page page ranking.
+ * @param {GraphDef} graphState
+ ***/
 
+export const graphReducer = (state: GraphDef, action: ActionDef) => {
   switch (action.type) {
     // Adds node in graph
     case ON_NODE_ADD: {
-      state[action.payload.node] = [];
-      return { ...state };
+      return { ...state, [action.payload.node]: [] };
       break;
     }
 
     // Removes node from graph
     case ON_NODE_REMOVE: {
-      delete state[action.payload.node];
+      let newState = { ...state };
+      delete newState[action.payload.node];
 
-      Object.keys(state).forEach((key) => {
-        if (state[key].indexOf(action.payload.node) !== -1) {
-          removeEdge(key, action.payload.node);
+      // remove edges of current removing nodes
+      Object.keys(newState).forEach((key) => {
+        const indexToRemove = newState[key].indexOf(action.payload.node);
+        if (indexToRemove !== -1) {
+          newState = removeEdge(newState, key, indexToRemove);
         }
       });
-      return { ...state };
+      return newState;
       break;
     }
 
     // Adds edge from graph
     case ON_EDGE_ADD: {
-      state[action.payload.source].push(action.payload.destination);
-      return { ...state };
+      return {
+        ...state,
+        [action.payload.source]: [
+          ...state[action.payload.source],
+          action.payload.destination,
+        ],
+      };
       break;
     }
 
     // Removes edge from graph
     case ON_EDGE_REMOVE: {
-      return removeEdge(action.payload.source, action.payload.destination);
+      return removeEdge(
+        state,
+        action.payload.source,
+        action.payload.indexToRemove
+      );
       break;
     }
 

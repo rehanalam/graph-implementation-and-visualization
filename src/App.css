@@ -39,3 +39,7 @@
   color:red;
   margin-top: 20px;
 }
+
+.network-chart-wrapper {
+  height: 300px;
+}

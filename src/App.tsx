@@ -1,23 +1,17 @@
 
 import { FunctionComponent, useReducer } from 'react';
 import './App.css';
-import EdgeComponent from './Edge';
-import { GraphDef, graphInitialValue } from './Graph';
+import EdgeComponent from './EdgeComponent';
+import { graphInitialValue } from './utility';
 import { graphReducer, ON_EDGE_ADD, ON_EDGE_REMOVE, ON_NODE_ADD, ON_NODE_REMOVE } from './GraphReducer';
-import NodeComponent from './Node';
-import GraphVisualization from './GraphVisualization';
+import NodeComponent from './NodeComponent';
+import GraphVisualization from './GraphVisualizationComponent';
 
-export const isNodeExist = (graphStat: GraphDef, node: string) => {
-  return !!graphStat.hasOwnProperty(node);
-};
-
+/**
+ * Main application component which renders node, edges and visualization component.
+ */
 const App: FunctionComponent = () => {
-  const [graphState, dispatch] = useReducer(graphReducer, {
-    A: [],
-    B: ["A", "C"],
-    C: ["A"],
-    D: []
-  });
+  const [graphState, dispatch] = useReducer(graphReducer, graphInitialValue);
 
   const onNodeAdd = (node: string): void => {
     dispatch({
@@ -43,16 +37,15 @@ const App: FunctionComponent = () => {
     })
   }
 
-  const onEdgeRemove = (source: string, destination: string): void => {
+  const onEdgeRemove = (source: string, indexToRemove: number): void => {
     dispatch({
       type: ON_EDGE_REMOVE,
       payload: {
         source,
-        destination
+        indexToRemove
       }
     })
   }
-
 
   return <div className="app-wrapper">
     <div className="graph-wrapper">

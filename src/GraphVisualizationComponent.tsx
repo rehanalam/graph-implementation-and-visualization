@@ -2,14 +2,18 @@ import { ResponsiveNetwork } from '@nivo/network';
 import { Card } from 'antd';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './App.css';
-import { ChartDataInterface, getChartData, GraphDef, pageRankDef, getPageRanking } from './Graph';
+import { ChartDataInterface, getChartData, GraphDef, pageRankDef, getPageRanking } from './utility';
 
 interface GraphVisualizationCompProps {
     graphState: GraphDef;
 }
 
-const GraphVisualization: FunctionComponent<GraphVisualizationCompProps> = (props) => {
-    const { graphState } = props;
+/***
+ * This component renders network chart to visualize nodes
+ * and shows page page ranking.
+ * @param {GraphDef} graphState
+***/
+const GraphVisualization: FunctionComponent<GraphVisualizationCompProps> = ({ graphState }) => {
     const [chartDataState, setChartDataState] = useState<ChartDataInterface>();
     const [pageRankState, setPageRankState] = useState<pageRankDef>();
 
@@ -23,7 +27,7 @@ const GraphVisualization: FunctionComponent<GraphVisualizationCompProps> = (prop
             data-testid="nodes-visualization"
             className="nodes-visualization"
             title="Nodes Visualization">
-            <div style={{ height: '300px' }}>
+            <div className="network-chart-wrapper">
                 {
                     chartDataState && <ResponsiveNetwork
                         nodes={chartDataState.nodes}

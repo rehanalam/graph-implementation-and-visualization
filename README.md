@@ -39,8 +39,15 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+<br/>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Page Rank Utility Limitations:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Do not support the damping factor for Page Rank calculation.
+- Do not support the tolerance value for Page Rank calculation.
+
+<br/>
+
+# Components Improvements:
+
+- UI State and form validation can be improve.

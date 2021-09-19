@@ -1,132 +1,114 @@
-export let romanNumerals = (function () {
-  interface RomanNumbersMapDef {
-    [key: string]: number;
+import { InputLink, InputNode } from "@nivo/network";
+
+export interface GraphDef {
+  [key: string]: Array<string>;
+}
+
+export interface ChartDataInterface {
+  nodes: InputNode[];
+  links: InputLink[];
+}
+
+export interface pageRankDef {
+  [key: string]: number;
+}
+
+export let graphInitialValue: GraphDef = {
+  A: [],
+  B: ["A", "C", "D", "F", "G"],
+  C: [],
+  D: [],
+  F: [],
+  G: [],
+  H: [],
+};
+
+/***
+ *
+ * getPageRanking determine the relative rank of nodes.
+ * TODO: Do not support the damping factor for Page Rank calculation.
+ * TODO: Do not support the tolerance value for Page Rank calculation.
+ * @param {GraphDef} graph
+ *
+ ***/
+
+export let getPageRanking = function (graph: GraphDef): pageRankDef {
+  const nodes = Object.keys(graph);
+  const nodeLength = nodes.length;
+
+  if (nodeLength < 1) {
+    return {};
   }
 
-  interface SpecialSymbolsMapDef {
-    [key: string]: string;
-  }
-
-  let romanNumbersMap: RomanNumbersMapDef = {
-    I: 1,
-    IV: 4,
-    V: 5,
-    IX: 9,
-    X: 10,
-    XL: 40,
-    L: 50,
-    XC: 90,
-    C: 100,
-    CD: 400,
-    D: 500,
-    CM: 900,
-    M: 1000,
-    F: 5000,
-    G: 10000,
-    H: 50000,
-    J: 100000,
-    K: 500000,
-    R: 1000000,
-  };
-
-  let baseValuesList = [
-    1000000, 500000, 100000, 50000, 10000, 5000, 1000, 900, 500, 400, 100, 90,
-    50, 40, 10, 9, 5, 4, 1,
-  ];
-
-  // Symbols with bar
-  let specialSymbolsMap: SpecialSymbolsMapDef = {
-    F: "_V",
-    G: "_X",
-    H: "_L",
-    J: "_C",
-    K: "_D",
-    R: "_M",
-  };
-
-  let romanNumber = "";
-
-  function resetRomanNumber() {
-    romanNumber = "";
-  }
-
-  // Converts roman numerals bar values to equivalent digit.
-  function checkSpecialSymbol(romanNumber: string) {
-    let newNumber = romanNumber;
-    Object.keys(specialSymbolsMap).forEach((key) => {
-      if (newNumber.indexOf(specialSymbolsMap[key]) !== -1) {
-        newNumber = newNumber.split(specialSymbolsMap[key]).join(key);
-      }
-    });
-    return newNumber;
-  }
-
-  // Convert digit equivalent bar value.
-  function checkSpecialCharacter(romanDigit: string) {
-    let newRomanDigit = romanDigit;
-    if (Object.keys(specialSymbolsMap).indexOf(romanDigit) < 0) {
-      return newRomanDigit;
-    }
-    return specialSymbolsMap[newRomanDigit];
-  }
-
-  function toRoman(decimalNumber: number): string {
-    let baseValue = baseValuesList.find((b) => decimalNumber >= b);
-
-    if (baseValue) {
-      let dividedValue = decimalNumber / baseValue;
-      let quotient = parseInt(dividedValue.toString().split(".")[0]);
-      let remainder = decimalNumber % baseValue;
-
-      // Find roman digit against base value
-      let romanDigit = Object.keys(romanNumbersMap).find(
-        (key) => romanNumbersMap[key] === baseValue
-      );
-
-      if (romanDigit) {
-        romanNumber += checkSpecialCharacter(romanDigit).repeat(quotient);
-
-        if (remainder === 0) {
-          return romanNumber;
-        } else {
-          return toRoman(remainder);
-        }
-      } else {
-        return "Value cannot be converted to roman number";
-      }
+  const probability = 1 / nodeLength;
+  let nodeProbability = nodes.reduce<pageRankDef>((acc, key): pageRankDef => {
+    let edgesLength = graph[key].length;
+    if (edgesLength > 0) {
+      acc[key] = probability / edgesLength;
     } else {
-      return "Value cannot be converted to roman number";
+      acc[key] = probability;
     }
-  }
+    return acc;
+  }, {});
 
-  function fromRoman(rn: string): number {
-    let decimalNumber = 0;
-    let romanNumber = checkSpecialSymbol(rn);
-    let romanNumberLength = romanNumber.length;
-
-    for (let i = 0; i < romanNumberLength; i++) {
-      let currentChar = romanNumber[i];
-      let nextChar = romanNumber[i + 1];
-      let currentCharValue = romanNumbersMap[currentChar];
-      let nextCharValue = romanNumbersMap[nextChar];
-
-      if (!currentCharValue) {
-        return -1;
-      }
-
-      if (!!nextCharValue && currentCharValue < nextCharValue) {
-        decimalNumber = decimalNumber + nextCharValue - currentCharValue;
-      } else {
-        decimalNumber = decimalNumber + currentCharValue;
-      }
+  let pageRanking: pageRankDef = {};
+  nodes.forEach((key) => {
+    const edgesLength = graph[key].length;
+    let sum = 0;
+    if (edgesLength) {
+      sum = graph[key].reduce((acc, cv) => {
+        return acc + nodeProbability[cv];
+      }, 0);
+    } else {
+      sum = nodeProbability[key];
     }
+    pageRanking[key] = sum;
+  });
+  console.log(pageRanking);
+  return pageRanking;
+};
 
-    return decimalNumber;
-  }
+/***
+ *
+ * getChartData transforms graph into data supported by @nivo/network chart.
+ * @param {GraphDef} graph
+ *
+ ***/
+export let getChartData = (graph: GraphDef) => {
+  let nodes = Object.keys(graph).map((n) => {
+    return {
+      id: n,
+      radius: 5,
+      depth: 1,
+      color: "rgb(97, 205, 187)",
+    };
+  });
 
+  let links: any = [];
+  Object.keys(graph).forEach((n) => {
+    graph[n].forEach((edge) => {
+      links.push({
+        source: n,
+        target: edge,
+        distance: 500,
+      });
+    });
+  });
+  console.log({ nodes, links });
+  return { nodes, links };
+};
+
+export const isNodeExist = (graphStat: GraphDef, node: string) => {
+  return !!graphStat.hasOwnProperty(node);
+};
+
+
+export const removeEdge = (state: GraphDef, source: string, indexToRemove: number) => {
   return {
-    toRoman,
-    fromRoman,
-    resetRomanNumber,
+    ...state,
+    [source]: [
+      ...state[source].slice(0, indexToRemove),
+      ...state[source].slice(indexToRemove + 1),
+    ],
   };
-})();
+};

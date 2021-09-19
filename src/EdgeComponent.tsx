@@ -1,13 +1,12 @@
 import { Button, Card, Form, Input } from 'antd';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { isNodeExist } from './App';
 import './App.css';
-import { GraphDef } from './Graph';
+import { GraphDef, isNodeExist } from './utility';
 
 interface EdgeComponentProps {
     graphState: GraphDef;
     onEdgeAdd: (source: string, destination: string) => void;
-    onEdgeRemove: (source: string, destination: string) => void;
+    onEdgeRemove: (source: string, indexToRemove: number) => void;
 }
 
 const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
@@ -30,7 +29,10 @@ const EdgeComponent: FunctionComponent<EdgeComponentProps> = (props) => {
 
     const removeEdge = (source: string, destination: string): void => {
         if (isNodeExist(graphState, source) && isNodeExist(graphState, destination)) {
-            onEdgeRemove(source, destination);
+            const indexToRemove = graphState[source].indexOf(destination);
+            if (indexToRemove !== -1) {
+                onEdgeRemove(source, indexToRemove);
+            }
         } else {
             setErrorState(`Node doesn't exist.`);
         }

@@ -1,8 +1,7 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
-import App from './App';
-import { getChartData, getPageRanking } from './Graph';
-import GraphVisualization from './GraphVisualization';
+import { render, screen } from '@testing-library/react';
+import { getChartData, getPageRanking } from './utility';
+import GraphVisualization from './GraphVisualizationComponent';
 
 describe("getChartData Function", () => {
   test("it should return valid nodes and links to render network chart", () => {

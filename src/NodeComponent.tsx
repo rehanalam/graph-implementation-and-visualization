@@ -1,8 +1,7 @@
 import { Button, Card, Form, Input } from 'antd';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { isNodeExist } from './App';
 import './App.css';
-import { GraphDef } from './Graph';
+import { GraphDef, isNodeExist } from './utility';
 
 interface NodeComponentProps {
     graphState: GraphDef;
