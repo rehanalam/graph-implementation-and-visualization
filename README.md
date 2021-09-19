@@ -48,6 +48,8 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 <br/>
 
-# Components Improvements:
+# Components Level Improvements:
 
 - UI State and form validation can be improve.
+- Input Focus and form submission can be improve.
+- SASS modules can be introduced.
